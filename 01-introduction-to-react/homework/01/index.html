@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>React Course</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="content"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.1/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.1/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.min.js"></script>
+
+    <script type="text/babel">
+        var dataArticle = {
+            title: 'Почему очевидна не для всех нормаль к поверхности?',
+            author: 'Пуассон',
+            body: [
+                'Уравнение в частных производных упорядочивает тройной интеграл. Огибающая семейства прямых, следовательно, очевидна не для всех. Абсолютно сходящийся ряд последовательно привлекает возрастающий график функции. Рассмотрим непрерывную функцию y = f ( x ), заданную на отрезке [ a, b ], ортогональный определитель развивает критерий сходимости Коши. Алгебра трансформирует равновероятный лист Мёбиуса.',
+                'Поле направлений непосредственно допускает возрастающий многочлен. Если предположить, что a < b, то подмножество транслирует убывающий тройной интеграл. Неравенство Бернулли, очевидно, небезынтересно стабилизирует тригонометрический бином Ньютона.',
+                'Функция многих переменных трансформирует абстрактный сходящийся ряд. Неравенство Бернулли, исключая очевидный случай, стабилизирует абстрактный предел функции. Более того, интеграл Фурье определяет параллельный интеграл Пуассона.'
+            ]
+        };
+
+
+        var Article = React.createClass({
+            render: function() {
+                var content = this.props.data;
+                return (
+                    <article className="article">
+                        <h2 className="article__title">{content.title}</h2>
+                        <h3 className="article__author">{content.author}</h3>
+                        <div className="article__body">
+                            {content.body.map(function(text, index) {
+                                return (
+                                    <p key={index}>{text}</p>
+                                );
+                            })}
+                        </div>
+                    </article>
+                );
+            }
+        });
+
+
+        ReactDOM.render(
+            <Article data={dataArticle} />,
+            document.getElementById('content')
+        );
+    </script>
+
+</body>
+</html>

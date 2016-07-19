@@ -1,0 +1,35 @@
+:root {
+    font: 100%/1.5 sans-serif;
+    color: #484848;
+    background: #f4f4f4;
+}
+
+.article {
+    margin: 0 auto;
+    max-width: 480px;
+    padding: 1.5em;
+    border: 1px solid #e8e8e8;
+    background: #fff;
+    border-radius: 2px;
+}
+
+    .article__title {
+        margin: 0 0 1em;
+        line-height: 1.2;
+    }
+
+    .article__author {
+        margin: 0 0 1em;
+        font-weight: normal;
+        color: #808080;
+    }
+
+    .article__body {}
+
+        .article__body p {
+            margin: 0;
+        }
+
+            .article__body p + p {
+                margin-top: 1em;
+            }
