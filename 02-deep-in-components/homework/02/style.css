@@ -1,0 +1,89 @@
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+    .icon path {
+        fill: currentColor;
+    }
+
+
+.timer {
+    display: inline-flex;
+    align-items: center;
+    background: #f1f7f9;
+}
+
+    .timer__controls,
+    .timer__time {
+        flex: 0 0 auto;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .timer__controls {
+        padding: 4px;
+    }
+
+    .timer__time {
+        padding: 8px;
+        font-weight: bold;
+        color: #484848;
+    }
+
+    .timer__btn {
+        margin: 4px;
+        display: inline-block;
+        vertical-align: middle;
+        padding: 4px;
+        border: 0;
+        background: none;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+        .timer__btn:hover {
+            color: #fff;
+        }
+
+        .timer__btn:active {
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.4) inset;
+        }
+
+        .timer__btn_play {
+            display: none;
+            color: #90d568;
+        }
+
+            .timer__btn_play:hover {
+                background: #90d568;
+            }
+
+        .timer__btn_pause {
+            color: #ffca4b;
+        }
+
+            .timer__btn_pause:hover {
+                background: #ffca4b;
+            }
+
+        .timer__btn_reset {
+            color: #00c7fa;
+        }
+
+            .timer__btn_reset:hover {
+                background: #00c7fa;
+            }
+
+        .timer__btn .icon {
+            display: block;
+        }
+
+    .timer_paused .timer__btn_play {
+        display: inline-block;
+    }
+
+    .timer_paused .timer__btn_pause {
+        display: none;
+    }
