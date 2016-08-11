@@ -55,27 +55,20 @@ var SearchForm = React.createClass({
 
     changeSearchQuery: function(e) {
         var text = e.target.value;
-        this.setState({ searchQuery: text });
-    },
-
-    searchHandler: function(e) {
-        e.preventDefault();
         var onSearch = this.props.onSearch;
-        var query = this.state.searchQuery;
-        onSearch(query);
+        this.setState({ searchQuery: text });
+        onSearch(text);
     },
 
     render: function() {
         return (
-            <form className="search-form" onSubmit={this.searchHandler} onReset={this.props.onReset}>
+            <form className="search-form">
                 <input
                     type="text"
                     placeholder="Search..."
                     value={this.state.searchQuery}
                     onChange={this.changeSearchQuery}
                 />
-                <button type="submit">Search</button>
-                <button type="reset">x</button>
             </form>
         )
     }
@@ -191,14 +184,17 @@ var NotesApp = React.createClass({
     getInitialState: function() {
         return {
             notes: [],
-            filteredNotes: []
+            filteredNotes: [],
+            searchValue: ''
         };
     },
 
     componentDidMount: function() {
         var localNotes = JSON.parse(localStorage.getItem('notes'));
         if (localNotes) {
-            this.setState({ notes: localNotes });
+            this.setState({
+                notes: localNotes
+            });
         }
     },
 
@@ -218,28 +214,31 @@ var NotesApp = React.createClass({
         var newNotes = this.state.notes.slice();
         newNotes.unshift(newNote);
         this.setState({ notes: newNotes });
-        // this.setState({ filteredNotes: this.state.filteredNotes });
+    },
+
+    filterNotes: function() {
+        var text = this.state.searchValue;
+        var notes = this.state.notes.slice();
+        var filteredNotes = notes.filter(function(note) {
+            return note.text.toLowerCase().indexOf(text) !== -1;
+        });
+        return filteredNotes;
     },
 
     handleSearch: function(text) {
         var text = text.trim().toLowerCase();
-        var filteredNotes = this.state.notes.filter(function(note) {
-            return note.text.toLowerCase().indexOf(text) !== -1;
+        this.setState({
+            searchValue: text
         });
-        this.setState({ filteredNotes: filteredNotes });
-    },
-
-    clearSearchFilter: function() {
-        this.setState({ filteredNotes: [] });
     },
 
     render: function() {
-        var notes = (this.state.filteredNotes.length !== 0) ? this.state.filteredNotes : this.state.notes;
+        var notes = this.filterNotes();
         return (
             <div className="notes-app">
                 <h2 className="app-header">NotesApp</h2>
-                <SearchForm onSearch={this.handleSearch} onReset={this.clearSearchFilter}/>
                 <NoteEditor onNoteAdd={this.handleNoteAdd} />
+				<SearchForm onSearch={this.handleSearch} />
                 <NotesGrid notes={notes} onNoteDelete={this.handleNoteDelete} />
             </div>
         );
