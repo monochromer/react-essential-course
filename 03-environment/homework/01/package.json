@@ -1,0 +1,31 @@
+{
+  "name": "ToDo-List",
+  "version": "1.0.0",
+  "description": "ToDo List demo app",
+  "main": "src/index.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devserver": "webpack-dev-server --debug --display-modules --hot --devtool eval-source-map --output-pathinfo --watch --colors --inline --content-base build --port 8090 --host 0.0.0.0"
+  },
+  "author": "Kateryna Porshnieva",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6"
+  },
+  "devDependencies": {
+    "autoprefixer-loader": "*",
+    "babel": "5.x",
+    "babel-loader": "5.*",
+    "css-loader": "^0.22.0",
+    "file-loader": "^0.8.5",
+    "json-loader": "^0.5.4",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.2",
+    "react-hot-loader": "^1.3.0",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.12",
+    "webpack-dev-server": "^1.14.1"
+  }
+}

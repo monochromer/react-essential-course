@@ -1,0 +1,31 @@
+.ToDoList {
+    margin: 0;
+    padding: 0.5em 0;
+    max-height: 300px;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    border: 1px solid #ececec;
+    border-radius: 2px;
+    background: #fff;
+}
+
+    .ToDoList-Item {
+        padding: 0.5em 1em;
+        flex: 0 0 auto;
+        transition: .3s;
+    }
+
+        .ToDoList-Item:hover {
+            background: #f6f7f8;
+        }
+
+    .ToDoList:empty:before {
+        content: 'List is empty';
+        margin: auto;
+        font-size: 14px;
+        padding: 0.5em 1em;
+        display: list-item;
+        color: #a0a0a0;
+    }

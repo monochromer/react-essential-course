@@ -1,0 +1,71 @@
+.Filter {
+    margin-bottom: 1em;
+    padding: .5em;
+    border: 1px solid #ececec;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;;
+    justify-content: center;
+    border-radius: 2px;
+    color: #8c8c8c;
+    background: #fff;
+}
+
+.FilterType {
+    display: flex;
+    align-items: flex-start;
+    flex: 0 0 auto;
+    padding: .5em;
+    cursor: pointer;
+    user-select: none;
+    transition: .2s;
+}
+
+    .FilterType-Icon {
+        position: relative;
+        margin: .25em;
+        flex: 0 0 auto;
+        box-sizing: border-box;
+        width: 16px;
+        height: 16px;
+        border: 2px solid;
+        border-radius: 50%;
+    }
+
+        .FilterType-Icon:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            opacity: 0;
+            transform: scale(0);
+            width:  6px;
+            height: 6px;
+            border-radius: inherit;
+            background: currentColor;
+            transition: .24s cubic-bezier(0.47, 0.34, 0.34, 1.77);;
+        }
+
+    .FilterType-Text {
+        margin: .25em;
+        flex: 1 1 0%;
+    }
+
+    .FilterType:hover {
+        color: #484848;
+    }
+
+    .FilterType--Active {
+        color: #484848;
+    }
+
+        .FilterType--Active .FilterType-Icon {
+            /*background: #1cb9ff;*/
+        }
+            .FilterType--Active .FilterType-Icon:before {
+                opacity: 1;
+                transform: scale(1);
+            }

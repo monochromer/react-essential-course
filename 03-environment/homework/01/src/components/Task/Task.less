@@ -1,0 +1,99 @@
+.Task {
+    display: flex;
+}
+
+    .Task-StatusIcon {
+        position: relative;
+        flex: 0 0 auto;
+        width:  22px;
+        height: 22px;
+        border: 1px solid;
+        color: #d8d8d8;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+        .Task-StatusIcon:before {
+            content: '';
+        	position: absolute;
+        	left:   8px;
+        	bottom: 6px;
+            opacity: 0;
+        	transform: rotate(45deg) scale(0);
+        	width: 5px;
+        	height: 12px;
+        	border-style: solid;
+            border-color: #fff;
+        	border-width: 0 1px 1px 0;
+        	transition: .3s cubic-bezier(0.61, 0.46, 0.27, 1.82);
+        }
+
+        .Task-StatusIcon:hover {
+            color: #a0a0a0;
+        }
+
+    .Task-Text {
+        flex: 1 1 0%;
+        padding: 3px 1em;
+        font-size: 14px;
+        line-height: 1.3;
+        -webkit-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+    }
+
+    .Task-Delete {
+        position: relative;
+        width: 24px;
+        height: 24px;
+        flex: 0 0 auto;
+        border: 0;
+        color: #8c8c8c;
+        background: none;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+        .Task-Delete:hover {
+            color: #ec3535;
+        }
+
+        .Task-Delete:before,
+        .Task-Delete:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 16px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        .Task-Delete:before {
+            transform: rotate(45deg);
+        }
+
+        .Task-Delete:after {
+            transform: rotate(-45deg);
+        }
+
+    .Task--Completed .Task-StatusIcon {
+        border-color: transparent;
+        background: #1cb9ff;
+        color: #fff;
+    }
+
+        .Task--Completed .Task-StatusIcon:before {
+            opacity: 1;
+            transform: rotate(45deg) scale(1);
+        }
+
+    .Task--Completed .Task-Text {
+        color: #a0a0a0;
+        text-decoration: line-through;
+    }
