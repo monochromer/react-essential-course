@@ -7,15 +7,15 @@ const App = React.createClass({
     render() {
         return (
             <div className='App'>
-                <div className='menu-bar'>
-                    <div className='menu-item'>
-                        <Link className='menu-item-link' to='/about'>About</Link>
-                    </div>
+                <ul className='menu-bar'>
+                    <li className='menu-item'>
+                        <Link className='menu-item-link' activeClassName="active" to='/about'>About</Link>
+                    </li>
 
-                    <div className='menu-item'>
-                        <Link className='menu-item-link' to='/inbox'>Inbox</Link>
-                    </div>
-                </div>
+                    <li className='menu-item'>
+                        <Link className='menu-item-link' activeClassName="active" to='/inbox'>Inbox</Link>
+                    </li>
+                </ul>
 
                 <div className='content'>
                     {this.props.children}

@@ -7,7 +7,6 @@ import './Message.less';
 const Message = React.createClass({
     getInitialState() {
         const { messageId } = this.props.params;
-
         return {
             message: messages.find(message => message.id === messageId)
         };
