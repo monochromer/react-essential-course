@@ -1,0 +1,17 @@
+@import "../styles/palette.less";
+
+.Message {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background-color: @card-background-color;
+    
+    &-Header {
+      flex: 0 0 auto;
+    }
+    
+    &-Body {
+      flex: 1 1 0%;
+      overflow: auto;
+    }
+}
