@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
-
 import config from '../../etc/config.json';
+import Note from '../models/Note';
 
-import '../models/Note';
+// const Note = mongoose.model('Note');
 
-const Note = mongoose.model('Note');
+// mpromise (mongoose's default promise library) is deprecated,
+// plug in your own promise library instead:
+// http://mongoosejs.com/docs/promises.html
+mongoose.Promise = global.Promise;
 
 export function setUpConnection() {
     mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`);

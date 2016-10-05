@@ -5,8 +5,62 @@
     <title>Notes</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
     <link href='style.css' rel='stylesheet' type='text/css'>
+    <style>
+        .Loader {
+            position: fixed;
+            z-index: 1;
+            top:    0;
+            bottom: 0;
+            left:   0;
+            right:  0;
+            opacity: 0;
+            visibility: hidden;
+            background: rgba(255, 255, 255, 0.84);
+            transition: .5s;
+        }
+            
+            .Loader-Spinner {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                width:  40px;
+                height: 40px;
+                border: 2px solid;
+                border-top-color:  transparent;
+                border-left-color: transparent;
+                border-radius: 50%;
+                color: #80d8ff;
+            }
+            
+            .Loader--Active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .Loader--Active .Loader-Spinner {
+                animation: activeLoader .75s linear infinite both;
+            }
+
+        @keyframes activeLoader {
+            to {
+                transform: rotate(1turn);
+            }
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            window['page-loader'].classList.remove('Loader--Active');
+        }
+    </script>
 </head>
 <body>
+    <div class='Loader Loader--Active' id='page-loader'>
+        <div class='Loader-Spinner'></div>
+    </div>
+
     <div id='mount-point'></div>
 
     <script type="text/javascript" src="build/bundle.js"></script>

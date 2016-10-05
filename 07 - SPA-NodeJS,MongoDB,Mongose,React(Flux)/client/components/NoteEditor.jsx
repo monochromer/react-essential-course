@@ -1,8 +1,8 @@
 import React from 'react';
 
 import ColorPicker from './ColorPicker.jsx';
-
 import './NoteEditor.less';
+
 
 const NoteEditor = React.createClass({
     getInitialState() {

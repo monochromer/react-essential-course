@@ -3,10 +3,11 @@ import React from 'react';
 import NotesStore from '../stores/NotesStore';
 import NotesActions from '../actions/NotesActions';
 
+import './App.less';
 import NoteEditor from './NoteEditor.jsx';
 import NotesGrid from './NotesGrid.jsx';
+import Loader from './Loader.jsx';
 
-import './App.less';
 
 function getStateFromFlux() {
     return {
@@ -31,6 +32,10 @@ const App = React.createClass({
     componentWillUnmount() {
         NotesStore.removeChangeListener(this._onChange);
     },
+    
+    _onChange() {
+        this.setState(getStateFromFlux());
+    }
 
     handleNoteDelete(note) {
         NotesActions.deleteNote(note.id);
@@ -43,15 +48,12 @@ const App = React.createClass({
     render() {
         return (
             <div className='App'>
+                <Loader isActive={this.state.isLoading} />
                 <h2 className='App__header'>NotesApp</h2>
                 <NoteEditor onNoteAdd={this.handleNoteAdd} />
                 <NotesGrid notes={this.state.notes} onNoteDelete={this.handleNoteDelete} />
             </div>
         );
-    },
-
-    _onChange() {
-        this.setState(getStateFromFlux());
     }
 });
 
