@@ -1,43 +1,33 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+
+import NotesController from './controllers/notesController';
+
 import { serverPort } from '../etc/config.json';
-import * as db from './utils/DataBaseUtils';
+// import * as notesService from './services/notesService';
 
 
-// Initialization of express application
-const app = express();
+class App {
+    constructor() {
+        this._express = express;
+        this._app = express();
 
-// Set up connection of database
-db.setUpConnection();
+        // Using bodyParser middleware
+        this._app.use(bodyParser.json());
 
-// Using bodyParser middleware
-app.use( bodyParser.json() );
+        // Allow requests from any origin
+        this._app.use(cors({ origin: '*' }));
 
-// Allow requests from any origin
-app.use(cors({ origin: '*' }));
+        const ctrl = new NotesController(this._app);
+    }
 
-
-// RESTful api handlers
-app.get('/notes', (req, res) => {
-    db
-      .listNotes()
-      .then(data => res.send(data));
-});
-
-app.post('/notes', (req, res) => {
-    db
-      .createNote(req.body)
-      .then(data => res.send(data));
-});
-
-app.delete('/notes/:id', (req, res) => {
-    db
-      .deleteNote(req.params.id)
-      .then(data => res.send(data));
-});
+    run() {
+        this._server = this._app.listen(serverPort, function() {
+            console.log(`Server is up and running on port ${serverPort}`);
+        });
+    }
+}
 
 
-const server = app.listen(serverPort, function() {
-    console.log(`Server is up and running on port ${serverPort}`);
-});
+(new App()).run();

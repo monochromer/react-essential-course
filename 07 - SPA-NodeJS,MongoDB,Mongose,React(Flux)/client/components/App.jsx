@@ -32,10 +32,10 @@ const App = React.createClass({
     componentWillUnmount() {
         NotesStore.removeChangeListener(this._onChange);
     },
-    
+
     _onChange() {
         this.setState(getStateFromFlux());
-    }
+    },
 
     handleNoteDelete(note) {
         NotesActions.deleteNote(note.id);
