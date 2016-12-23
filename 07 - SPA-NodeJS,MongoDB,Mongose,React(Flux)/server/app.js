@@ -12,6 +12,8 @@ class App {
     constructor() {
         this._express = express;
         this._app = express();
+        
+        this._app.use(express.static(path.join(__dirname + '/../public')));
 
         // Using bodyParser middleware
         this._app.use(bodyParser.json());
