@@ -1,15 +1,19 @@
+import express from 'express';
+
 import * as notesService from '../services/notesService';
 
 class Controller {
     constructor(app) {
         notesService.setUpConnection();
-        this.configureRoutes(app);
+        this.router = express.Router();
+        this.configureRoutes(this.router);
+        return this.router;
     }
 
-    configureRoutes(app) {
-        app.get('/notes', this.getNotes);
-        app.post('/notes', this.postNote);
-        app.delete('/notes/:id', this.deleteNote);
+    configureRoutes(router) {
+        router.get('/notes', this.getNotes);
+        router.post('/notes', this.postNote);
+        router.delete('/notes/:id', this.deleteNote);
     }
 
     getNotes(req, res) {

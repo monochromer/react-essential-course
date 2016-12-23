@@ -3,10 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import NotesController from './controllers/notesController';
-
 import { serverPort } from '../etc/config.json';
-// import * as notesService from './services/notesService';
-
 
 class App {
     constructor() {
@@ -15,13 +12,10 @@ class App {
         
         this._app.use(express.static(path.join(__dirname + '/../public')));
 
-        // Using bodyParser middleware
         this._app.use(bodyParser.json());
-
-        // Allow requests from any origin
         this._app.use(cors({ origin: '*' }));
 
-        const ctrl = new NotesController(this._app);
+        this._app.use(new NotesController());
     }
 
     run() {

@@ -10,7 +10,7 @@ import Note from '../models/Note';
 mongoose.Promise = global.Promise;
 
 export function setUpConnection() {
-    mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`);
+    mongoose.connect(`mongodb://${config.db.dbuser}:${config.db.dbpassword}@${config.db.host}:${config.db.port}/${config.db.name}`);
 }
 
 export function listNotes(id) {
