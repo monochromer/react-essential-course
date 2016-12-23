@@ -7,14 +7,14 @@ import './MessagePreview.less';
 
 const MessagePreview = React.createClass({
     render() {
-        const { title, senderName, selected, onClick } = this.props;
+        const { id, title, senderName, selected, onClick } = this.props;
         const classes = classNames('MessagePreview', { selected });
 
         return (
             <div className={classes}>
                 <div className='title'>{title}</div>
                 <div className='from'>{`from ${senderName}`}</div>
-                <Link to={`/inbox/messages/${this.props.id}`} className="MessagePreview-Link"></Link>
+                <Link to={`/inbox/messages/${id}`} className="MessagePreview-Link"></Link>
             </div>
         );
     }

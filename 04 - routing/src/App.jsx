@@ -3,26 +3,26 @@ import { Link } from 'react-router';
 
 import './App.less';
 
+const RouteLink = React.createClass({
+    render() {
+        return (
+            <Link className='menu-item-link' activeClassName='active' {...this.props}>
+                {this.props.children}
+            </Link>
+        )
+    }
+})
+
 const App = React.createClass({
     render() {
         return (
             <div className='App'>
                 <ul className='menu-bar'>
                     <li className='menu-item'>
-                        <Link
-                          className='menu-item-link'
-                          activeClassName='active'
-                          to='/about'>
-                            About
-                        </Link>
+                        <RouteLink to='/about'>About</RouteLink>
                     </li>
                     <li className='menu-item'>
-                        <Link
-                          className='menu-item-link'
-                          activeClassName='active'
-                          to='/inbox'>
-                            Inbox
-                        </Link>
+                        <RouteLink to='/inbox'>Inbox</RouteLink>
                     </li>
                 </ul>
 
