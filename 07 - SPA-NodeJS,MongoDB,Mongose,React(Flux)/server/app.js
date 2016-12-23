@@ -1,6 +1,9 @@
+import path from 'path';
+
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+// import webpackMiddleware from 'webpack-dev-middleware';
 
 import NotesController from './controllers/notesController';
 import { serverPort } from '../etc/config.json';
@@ -14,6 +17,7 @@ class App {
 
         this._app.use(bodyParser.json());
         this._app.use(cors({ origin: '*' }));
+        // this._app.use(app.use(webpackMiddleware()));
 
         this._app.use(new NotesController());
     }

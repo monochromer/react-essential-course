@@ -1,5 +1,5 @@
 import React from 'react';
-import Note from './Note.jsx';
+import Note from '../Note/Note.jsx';
 
 import Masonry from 'react-masonry-component';
 import './NotesGrid.less';

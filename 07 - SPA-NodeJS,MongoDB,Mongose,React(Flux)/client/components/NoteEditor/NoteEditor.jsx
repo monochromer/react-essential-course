@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ColorPicker from './ColorPicker.jsx';
+import ColorPicker from '../ColorPicker/ColorPicker.jsx';
 import './NoteEditor.less';
 
 
