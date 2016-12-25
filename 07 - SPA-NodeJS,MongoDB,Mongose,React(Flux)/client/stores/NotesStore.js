@@ -8,6 +8,7 @@ const CHANGE_EVENT = 'change';
 let _notes = [];
 let _loadingError = null;
 let _isLoading = true;
+let _isProcess = true;
 
 function formatNote(note) {
     return {
@@ -22,6 +23,10 @@ function formatNote(note) {
 const TasksStore = Object.assign({}, EventEmitter.prototype, {
     isLoading() {
         return _isLoading;
+    },
+
+    isProcess() {
+        return _isProcess;
     },
 
     getNotes() {
@@ -43,6 +48,18 @@ const TasksStore = Object.assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(action) {
     switch(action.type) {
+        case AppConstants.PROCESS_DATA_START: {
+            _isProcess = true;
+            TasksStore.emitChange();
+            break;
+        }
+
+        case AppConstants.PROCESS_DATA_END: {
+            _isProcess = false;
+            TasksStore.emitChange();
+            break;
+        }
+
         case AppConstants.LOAD_NOTES_REQUEST: {
             _isLoading = true;
 

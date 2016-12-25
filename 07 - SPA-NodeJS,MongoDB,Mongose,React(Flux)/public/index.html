@@ -51,17 +51,23 @@
         }
     </style>
     <script>
-        window.onload = function() {
-            window['page-loader'].classList.remove('Loader--Active');
+        function hideLoader() {
+            var loader = window['page-loader'];
+            window.removeEventListener('load', hideLoader);
+            loader.classList.remove('Loader--Active');
+            loader.remove();
         }
+        window.addEventListener('load', hideLoader);
     </script>
 </head>
 <body>
+
     <div class='Loader Loader--Active' id='page-loader'>
         <div class='Loader-Spinner'></div>
     </div>
 
-    <div id='mount-point'></div>
+    <div id='mount-point'>
+    </div>
 
     <script type="text/javascript" src="build/bundle.js"></script>
 </body>

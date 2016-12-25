@@ -17,20 +17,17 @@ class Controller {
     }
 
     getNotes(req, res) {
-        return notesService
-          .listNotes()
+        return notesService.listNotes()
           .then(data => res.send(data));
     }
 
     postNote(req, res) {
-        return notesService
-          .createNote(req.body)
+        return notesService.createNote(req.body)
           .then(data => res.send(data));
     }
 
     deleteNote(req, res) {
-        return notesService
-            .deleteNote(req.params.id)
+        return notesService.deleteNote(req.params.id)
             .then(data => res.send(data));
     }
 }

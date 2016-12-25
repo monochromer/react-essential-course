@@ -12,6 +12,7 @@ import Loader from '../Loader/Loader.jsx';
 function getStateFromFlux() {
     return {
         isLoading: NotesStore.isLoading(),
+        isProcess: NotesStore.isProcess(),
         notes: NotesStore.getNotes()
     };
 }
@@ -48,7 +49,7 @@ const App = React.createClass({
     render() {
         return (
             <div className='App'>
-                <Loader isActive={this.state.isLoading} />
+                <Loader isActive={this.state.isProcess} />
                 <h2 className='App__header'>NotesApp</h2>
                 <NoteEditor onNoteAdd={this.handleNoteAdd} />
                 <NotesGrid notes={this.state.notes} onNoteDelete={this.handleNoteDelete} />
