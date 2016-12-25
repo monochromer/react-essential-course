@@ -6,10 +6,6 @@ import './AddFrom.less';
 class AddForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            text: ''
-        };
-        this.onChangeText = this.onChangeText.bind(this);
         this.addTask = this.addTask.bind(this);
         /**
          * Варианты привязки this (возможно, понадобятся настройки babel)
@@ -20,40 +16,26 @@ class AddForm extends React.Component {
          */
     }
 
-    onChangeText(e) {
-        var text = e.target.value;
-        this.setState({
-            text: text
-        });
-    }
-
     addTask(e) {
+        var input = this.input;
+        var text = input.value;
+        if (text.trim() === '') return false;
+
+        this.props.onTaskAdd(text);
+
+        input.value = '';
         e.preventDefault();
-
-        var text = this.state.text;
-        if (text.trim() === '') return;
-
-        var task = {
-            text: text,
-            completed: false
-        };
-        var onTaskAdd = this.props.onTaskAdd;
-        onTaskAdd(task);
-
-        this.setState({
-            text: ''
-        });
     }
 
     render() {
         return (
-            <form className='AddForm' onSubmit={this.addTask}>
+             <form className='AddForm' onSubmit={this.addTask}>
                 <input
                     className='AddForm-Input'
+                    ref={input => this.input = input}
                     type='text'
                     placeholder='Enter todo task...'
-                    value={this.state.text}
-                    onChange={this.onChangeText}
+                    defaultValue=''
                 />
             </form>
         );

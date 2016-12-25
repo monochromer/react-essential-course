@@ -30,7 +30,7 @@ class ToDoApp extends React.Component {
     }
 
     componentDidUpdate() {
-       this.updateLocalStorage();
+        this.updateLocalStorage();
     }
 
     updateLocalStorage() {
@@ -48,40 +48,67 @@ class ToDoApp extends React.Component {
         var tasks = this.state.tasks.slice();
         var index = tasks.indexOf(task);
         tasks[index].completed = !tasks[index].completed;
-        this.setState({ tasks: tasks});
+        this.setState({ tasks: tasks });
     }
 
     deleteTask(task) {
         var tasks = this.state.tasks.slice();
         var index = tasks.indexOf(task);
         tasks.splice(index, 1);
-        this.setState({ tasks: tasks});
+        this.setState({ tasks: tasks });
     }
 
-    addTask(task) {
+    addTask(taskText) {
         var tasks = this.state.tasks.slice();
-        tasks.push(task);
-        this.setState({ tasks: tasks});
+    
+        tasks.push({
+            id: Date.now(),
+            text: taskText,
+            completed: false
+        });
+
+        this.setState({
+            tasks: tasks
+        });
     }
 
     render() {
+        var tasks = ToDoApp.filterListActions[this.state.filterType](this.state.tasks);
         return (
             <div className='ToDoApp'>
                 <AddForm onTaskAdd={this.addTask}/>
 
                 <FilterForm
                     types={['all', 'completed', 'active']}
+                    filterType={this.state.filterType}
                     onChangeFilterType={this.onChangeFilterType}
                 />
 
                 <ToDoList
-                    filterType={this.state.filterType}
-                    tasks={this.state.tasks}
+                    tasks={tasks}
                     onToDoStatusChanged={this.changeTaskStatus}
                     onToDoDelete={this.deleteTask}
                 />
             </div>
         );
+    }
+};
+
+ToDoApp.filterListActions = {
+    'completed': function(tasks) {
+        return tasks.filter(function(task) {
+            return task.completed === true;
+        });
+    },
+
+    'active': function(tasks) {
+        return tasks.filter(function(task) {
+            return task.completed === false;
+        });
+    },
+
+    'all': function(tasks) {
+        return [].concat(tasks);
     }
 };
 
