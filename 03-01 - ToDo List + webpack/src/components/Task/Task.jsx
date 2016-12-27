@@ -7,7 +7,7 @@ const Task = (props) => {
   return (
     <div className={'Task' + (props.completed ? ' Task--Completed' : '')}>
         <div className='Task-StatusIcon'
-            title="Mark Task as Completed"
+            title={props.completed ? 'Mark Task as Uncompleted' : 'Mark Task as Completed'}
             onClick={props.onToDoStatusChanged}
         />
         <div className='Task-Text'>{props.children}</div>
