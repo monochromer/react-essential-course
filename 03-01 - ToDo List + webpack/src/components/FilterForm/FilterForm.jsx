@@ -9,8 +9,7 @@ class FilterForm extends React.Component {
     }
 
     changeFilterType(type) {
-        var changeCallback = this.props.onChangeFilterType;
-        changeCallback(type);
+        this.props.onChangeFilterType(type);
     }
 
     render() {
