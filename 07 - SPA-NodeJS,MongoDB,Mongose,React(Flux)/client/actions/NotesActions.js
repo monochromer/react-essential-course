@@ -42,24 +42,16 @@ const NoteActions = {
         processStart();
 
         api.createNote(note)
-            .then(() =>
-                this.loadNotes()
-            )
-            .catch(err =>
-                console.error(err)
-            )
+            .then(() => this.loadNotes())
+            .catch(err => console.error(err))
             .then(processEnd);
     },
 
     deleteNote(noteId) {
         processStart();
         api.deleteNote(noteId)
-            .then(() =>
-                this.loadNotes()
-            )
-            .catch(err =>
-                console.error(err)
-            )
+            .then(() => this.loadNotes())
+            .catch(err => console.error(err))
             .then(processEnd);
     }
 };
