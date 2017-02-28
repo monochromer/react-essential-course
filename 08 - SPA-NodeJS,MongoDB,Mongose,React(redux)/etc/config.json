@@ -1,0 +1,11 @@
+{
+    "apiPrefix": "http://localhost:8080",
+    "serverPort": "8080",
+    "db":{
+        "name": "notesappdb",
+        "host": "ds143588.mlab.com",
+        "dbuser": "user",
+        "dbpassword": "123456",
+        "port": 43588
+    }
+}

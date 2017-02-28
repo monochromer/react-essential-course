@@ -1,0 +1,32 @@
+import mongoose from "mongoose";
+import config from '../../etc/config.json';
+import Note from '../models/Note';
+
+// mpromise (mongoose's default promise library) is deprecated,
+// plug in your own promise library instead:
+// http://mongoosejs.com/docs/promises.html
+mongoose.Promise = global.Promise;
+
+export function setUpConnection() {
+    mongoose.connect(`mongodb://${config.db.dbuser}:${config.db.dbpassword}@${config.db.host}:${config.db.port}/${config.db.name}`);
+}
+
+export function listNotes(id) {
+    return Note.find();
+}
+
+export function createNote(data) {
+    const note = new Note({
+        title: data.title,
+        text: data.text,
+        color: data.color,
+        createdAt: new Date()
+    });
+
+    return note.save();
+}
+
+export function deleteNote(id) {
+    return Note.findById(id).remove();
+}
+

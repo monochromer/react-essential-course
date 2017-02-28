@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,500">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        *,
+        ::before,
+        ::after {
+            box-sizing: border-box;
+        }
+
+        :root {
+            font-family: sans-serif;
+            background-color: #eaeaea;
+        }
+
+        #mount-point {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .Loader {
+            position: fixed;
+            z-index: 1;
+            top:    0;
+            bottom: 0;
+            left:   0;
+            right:  0;
+            opacity: 0;
+            visibility: hidden;
+            background: rgba(255, 255, 255, 0.84);
+            transition: .5s;
+        }
+
+            .Loader-Spinner {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                width:  40px;
+                height: 40px;
+                border: 2px solid;
+                border-top-color:  transparent;
+                border-left-color: transparent;
+                border-radius: 50%;
+                color: #80d8ff;
+            }
+
+            .Loader--Active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .Loader--Active .Loader-Spinner {
+                animation: activeLoader .75s linear infinite both;
+            }
+
+        @keyframes activeLoader {
+            to {
+                transform: rotate(1turn);
+            }
+        }
+    </style>
+    <script>
+        function hideLoader() {
+            var loader = document.getElementById('page-loader');
+            window.removeEventListener('load', hideLoader);
+            loader.classList.remove('Loader--Active');
+            loader.remove();
+        }
+        window.addEventListener('load', hideLoader);
+    </script>
+</head>
+<body>
+
+    <div class='Loader Loader--Active' id='page-loader'>
+        <div class='Loader-Spinner'></div>
+    </div>
+
+    <div id="mount-point"></div>
+
+    <script src="assets/common.js"></script>
+    <script src="assets/bundle.js"></script>
+</body>
+</html>
