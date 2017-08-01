@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import config from '../../etc/config.json';
+import config from '../../etc/config';
 import Note from '../models/Note';
 
 // mpromise (mongoose's default promise library) is deprecated,
@@ -8,10 +8,12 @@ import Note from '../models/Note';
 mongoose.Promise = global.Promise;
 
 export function setUpConnection() {
-    mongoose.connect(`mongodb://${config.db.dbuser}:${config.db.dbpassword}@${config.db.host}:${config.db.port}/${config.db.name}`);
+    mongoose.connect(`mongodb://${config.db.dbuser}:${config.db.dbpassword}@${config.db.host}:${config.db.port}/${config.db.name}`, {
+        useMongoClient: true
+    });
 }
 
-export function listNotes(id) {
+export function listNotes() {
     return Note.find();
 }
 

@@ -1,61 +1,81 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import NotesStore from '../../stores/NotesStore';
-import NotesActions from '../../actions/NotesActions';
+import * as actions from '../../actionsCreators/NotesActionsCreators';
 
-import './App.less';
-import NoteEditor from '../NoteEditor/NoteEditor.jsx';
-import NotesGrid from '../NotesGrid/NotesGrid.jsx';
-import Loader from '../Loader/Loader.jsx';
+import './App.css';
+import NoteEditor from '../../components/NoteEditor/NoteEditor';
+import NotesGrid from '../../components/NotesGrid/NotesGrid';
+import SearchForm from '../../components/SearchForm/SearchForm';
+import Loader from '../../components/Loader/Loader';
 
-
-function getStateFromFlux() {
-    return {
-        isLoading: NotesStore.isLoading(),
-        isProcess: NotesStore.isProcess(),
-        notes: NotesStore.getNotes()
-    };
-}
-
-const App = React.createClass({
-    getInitialState() {
-        return getStateFromFlux();
-    },
-
-    componentWillMount() {
-        NotesActions.loadNotes();
-    },
+class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            searchValue: ''
+        }
+    }
 
     componentDidMount() {
-        NotesStore.addChangeListener(this._onChange);
-    },
+        var { dispatch, noteActions } = this.props;
+        noteActions.loadNotes();
+    }
 
-    componentWillUnmount() {
-        NotesStore.removeChangeListener(this._onChange);
-    },
+    handleSearch = (text) => {
+        var text = text.trim().toLowerCase();
+        this.setState({
+            searchValue: text
+        });
+    }
 
-    _onChange() {
-        this.setState(getStateFromFlux());
-    },
-
-    handleNoteDelete(note) {
-        NotesActions.deleteNote(note.id);
-    },
-
-    handleNoteAdd(noteData) {
-        NotesActions.createNote(noteData);
-    },
+    filterNotes(notes) {
+        var text = this.state.searchValue;
+        var notes = notes.slice();
+        var filteredNotes = notes.filter(function(note) {
+            return note.text.toLowerCase().indexOf(text) !== -1
+                || note.title.toLowerCase().indexOf(text) !== -1
+        });
+        return filteredNotes;
+    }
 
     render() {
+        var { notes, loading, noteActions } = this.props;
+        var { createNote, deleteNote } = noteActions;
+        var filteredNotes = this.filterNotes(notes);
+
         return (
             <div className='App'>
-                <Loader isActive={this.state.isProcess} />
-                <h2 className='App__header'>NotesApp</h2>
-                <NoteEditor onNoteAdd={this.handleNoteAdd} />
-                <NotesGrid notes={this.state.notes} onNoteDelete={this.handleNoteDelete} />
+                <Loader isActive={loading} />
+
+                <h2 className='App-Header'>NotesApp</h2>
+                <NoteEditor onNoteAdd={createNote} />
+                <SearchForm onSearch={this.handleSearch} />
+
+                <div style={{
+                    padding: '0 16px 16px',
+                    textAlign: 'center',
+                    display: !!this.state.searchValue ? 'block' : 'none'
+                }}>
+                    Find notes: {filteredNotes.length} of {notes.length}
+                </div>
+                <NotesGrid notes={filteredNotes} onNoteDelete={deleteNote} />
             </div>
         );
     }
+};
+
+const mapStateToProps = (state, ownProps) => ({
+    notes: state.notes,
+    loading: state.loading
 });
 
-export default App;
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    noteActions: bindActionCreators(actions, dispatch)
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);

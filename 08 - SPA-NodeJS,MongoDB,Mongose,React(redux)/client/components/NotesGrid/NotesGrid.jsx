@@ -1,11 +1,10 @@
 import React from 'react';
-import Note from '../Note/Note.jsx';
+import Note from '../Note/Note';
 
 import Masonry from 'react-masonry-component';
-import './NotesGrid.styl';
+import './NotesGrid.css';
 
-const NotesGrid = React.createClass({
-    render() {
+const NotesGrid = ({ notes, onNoteDelete }) => {
         const masonryOptions = {
             itemSelector: '.Note',
             columnWidth: 250,
@@ -19,20 +18,17 @@ const NotesGrid = React.createClass({
                 options={masonryOptions}
             >
                 {
-                    this.props.notes.map(note =>
+                    notes.map(note =>
                         <Note
                             key={note.id}
-                            title={note.title}
-                            onDelete={this.props.onNoteDelete.bind(null, note)}
-                            color={note.color}
+                            {...note}
+                            onDelete={onNoteDelete}
                         >
-                            {note.text}
                         </Note>
                     )
                 }
             </Masonry>
         );
-    }
-});
+};
 
 export default NotesGrid;

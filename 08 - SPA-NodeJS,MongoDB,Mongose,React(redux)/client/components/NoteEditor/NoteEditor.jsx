@@ -1,74 +1,81 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import ColorPicker from '../ColorPicker/ColorPicker.jsx';
-import './NoteEditor.styl';
+import ColorPicker from '../ColorPicker/ColorPicker';
+import './NoteEditor.css';
 
+const COLORS = ['#ffffff', '#80d8ff', '#ffff8d', '#ff8a80', '#ccff90', '#cfd8dc', '#ffd180'];
 
-const NoteEditor = React.createClass({
-    getInitialState() {
-        return {
+class NoteEditor extends Component {
+    constructor() {
+        super();
+        this.state = {
             title: '',
             text: '',
-            color: '#FFFFFF'
+            color: '#ffffff'
         };
-    },
+    }
 
-    handleTextChange(event) {
-        this.setState({ text: event.target.value });
-    },
-
-    handleTitleChange(event) {
-        this.setState({ title: event.target.value });
-    },
-
-    handleColorChange(color) {
-        this.setState({ color });
-    },
+    onChange = (event) => {
+        var { name, value } = event.target;
+        this.setState((prevState, props) => ({
+            [name]: value
+        }))
+    };
 
     handleNoteAdd() {
         const newNote = {
-            title: this.state.title,
-            text: this.state.text,
-            color: this.state.color
+            ...this.state
         };
 
         this.props.onNoteAdd(newNote);
-        this.setState({ text: '', title: '', color: '#FFFFFF' });
-    },
+        this.setState({ text: '', title: '', color: '#fffff' });
+        this.form.reset();
+    }
+
+    onSubmit = (event) => {
+        this.handleNoteAdd();
+        event.preventDefault();
+    };
 
     render() {
         return (
-            <div className='NoteEditor'>
+            <form
+                className='NoteEditor'
+                onSubmit={this.onSubmit}
+                onChange={this.onChange}
+                ref={c => this.form = c}
+            >
                 <input
                     type='text'
+                    name='title'
                     className='NoteEditor-Title'
                     placeholder='Enter title'
-                    value={this.state.title}
-                    onChange={this.handleTitleChange}
+                    defaultValue={this.state.title}
+                    required
                 />
                 <textarea
                     placeholder='Enter note text'
                     rows={5}
+                    name='text'
                     className='NoteEditor-Text'
-                    value={this.state.text}
-                    onChange={this.handleTextChange}
+                    defaultValue={this.state.text}
                 />
                 <div className='NoteEditor-Footer'>
-                    <ColorPicker
+                     <ColorPicker
                         value={this.state.color}
-                        onChange={this.handleColorChange}
+                        colors={COLORS}
+                        name='color'
                     />
                     <button
                         className='NoteEditor-Button'
-                        disabled={!this.state.text}
-                        onClick={this.handleNoteAdd}
+                        disabled={!this.state.title}
                     >
                         Add
                     </button>
                 </div>
-            </div>
+            </form>
         );
     }
-});
+};
 
 export default NoteEditor;

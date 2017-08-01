@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 
 const NoteSchema = new Schema({
     title:{
-        type: String
-    },
-    text: {
         type: String,
         required: true
+    },
+    text: {
+        type: String
     },
     color: {
         type: String

@@ -1,11 +1,37 @@
 {
   "presets": [
-    "es2015",
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": [
+          "last 4 versions",
+          "safari >= 7",
+          "IE >= 9"
+        ]
+      }
+    }],
     "stage-0",
-    "react"
+    "react",
+    "es2015"
   ],
   "plugins": [
     "transform-runtime",
-    "transform-es2015-modules-commonjs"
-  ]
+    "transform-object-rest-spread",
+    "transform-decorators",
+    ["transform-class-properties", { "spec": true }],
+    "react-hot-loader/babel"
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        "transform-react-constant-elements",
+        "transform-react-inline-elements",
+        ["transform-react-remove-prop-types", {
+          "mode": "remove",
+          "ignoreFilenames": ["node_modules"],
+          "additionalLibraries": ["react-immutable-proptypes"]
+        }]
+      ]
+    }
+  }
 }

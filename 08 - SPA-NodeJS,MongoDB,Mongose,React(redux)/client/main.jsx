@@ -1,14 +1,14 @@
 import 'babel-polyfill';
+
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import { render } from 'react-dom';
 
-import store from './stores/store';
-import App from './containers/App/App.jsx';
+import Root from './containers/Root';
+import configureStore from './store';
 
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
+const store = configureStore();
+
+render(
+    <Root store={store} />,
     document.getElementById('mount-point')
 );

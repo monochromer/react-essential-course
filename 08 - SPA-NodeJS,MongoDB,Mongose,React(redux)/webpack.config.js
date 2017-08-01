@@ -1,135 +1,175 @@
 const path = require('path');
 const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const NODE_ENV = (process.env.NODE_ENV || 'development').trim();
+const isProd = NODE_ENV === 'production';
+const isDev = !isProd;
 
-var config = {
-    context: path.resolve(__dirname, 'client'),
-    entry: {
-        bundle: './main.jsx',
-        common: './common.js'
-    },
+let webpackConfig = options => {
+  return {
+    context: path.join(__dirname, 'client'),
+    entry: './main',
+      // ? [
+      //   'react-hot-loader/patch',
+      //   './main'
+      // ]
+      // : [
+      //   './main'
+      // ],
     output: {
-        filename: '[name].js',
-        path: path.join(__dirname, '/build/assets/'),
-        publicPath: process.env.ASSET_PATH || '/assets'
+      path: path.join(__dirname, 'public'),
+      filename: '[name].js',
+      publicPath: '/',
     },
 
     resolve: {
-        root: [
-            path.resolve(__dirname, '/client'),
-            path.resolve(__dirname, '/node_modules')
+        modules: [
+          path.join(__dirname, 'src'),
+          'node_modules'
         ],
-        modulesDirectories: ['node_modules'],
-        extensions:         ['', '.js', '.jsx', '.tsx', '.csx', '.coffee']
+        extensions: ['.js', '.jsx', '.tsx', '.csx', '.coffee']
     },
 
-    watch: NODE_ENV === 'development',
-    watchOptions: {
-        aggregateTimeout: 150
+    resolveLoader: {
+      modules: ['node_modules']
     },
-
-    devtool: NODE_ENV === 'development' ? 'cheap-module-eval-source-map' : null,
-
-    plugins: [
-        // не дает перезаписать скрипты при наличии в них ошибок
-        new webpack.NoErrorsPlugin(),
-
-        // находит общие зависимости библиотек и обобщает их
-        new webpack.optimize.DedupePlugin(),
-
-        // минимизирует id, которые используются webpack для подгрузки чанков и прочего
-        new webpack.optimize.OccurrenceOrderPlugin(),
-
-        // выделение общего кода из точек входа
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common',
-            minChunks: 2
-        }),
-
-        new webpack.DefinePlugin({
-            NODE_ENV: JSON.stringify(NODE_ENV),
-            LANG: JSON.stringify('ru')
-        }),
-
-        new ExtractTextPlugin('styles.css', {
-            allChunks: true,
-            disable: NODE_ENV === 'development'
-        })
-    ],
 
     module: {
-        rules: [
-            {
-                test: /\.js$/,
-                loader: 'babel',
-                exclude: [/node_modules/, /build/]
-            },
-            {
-                test: /\.jsx$/,
-                loaders: ['react-hot', 'babel'],
-                exclude: [/node_modules/, /build/]
-            },
-            {
-                test: /\.css$/,
-                loaders: ['style', 'css', 'postcss'],
-                exclude: [/build/]
-            },
-            {
-                test: /\.styl$/,
-                loader: ExtractTextPlugin.extract('style', 'css!postcss!stylus?resolve url'),
-                exclude: [/node_modules/, /build/]
-            },
-            {
-                test:   /\.(png|jpg|jpeg|svg|ttf|eot|woff|woff2)$/,
-                loader: 'url?name=[path][name].[ext]&limit=4096'
-            }
-        ]
-    },
+      rules: [
+        {
+          test: /\.js|.jsx$/,
+          use: ['babel-loader'],
+          exclude: [/node_modules/, /build/]
+        },
 
-    postcss: function () {
-        return [
-            autoprefixer({
-                browsers: ['last 4 versions', '> 1%', 'IE 9']
+        {
+          test: /\.css$/,
+          exclude: [/build/],
+          use: isDev
+            ? [
+                { loader: 'style-loader' },
+                { loader: 'css-loader' },
+                { loader: 'postcss-loader' }
+            ]
+            : ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: [
+                { loader: 'css-loader' },
+                { loader: 'postcss-loader' }
+              ]
             })
-        ];
+        },
+
+        {
+          test: /\.(gif|png|jpe?g|svg)$/i,
+          loaders: [
+            'file-loader', {
+              loader: 'image-webpack-loader',
+              query: {
+                progressive: true,
+                optimizationLevel: 7,
+                interlaced: false,
+                pngquant: {
+                  quality: '65-90',
+                  speed: 4
+                }
+              }
+            }
+          ]
+        },
+
+        {
+           test: /\.(woff|woff2|eot|ttf|otf)$/,
+           use: ['file-loader']
+        }
+      ]
     },
 
-    devServer: {
-        host: 'localhost',
-        port: '9000',
-        contentBase: [
-            path.join(__dirname, '/public/'),
-            path.join(__dirname, '/public/build/')
-        ],
-        hot: true,
-        historyApiFallback: true
-    }
-};
+    plugins: [
+      new webpack.optimize.OccurrenceOrderPlugin(),
 
+      new webpack.NoEmitOnErrorsPlugin(),
 
-if (NODE_ENV == 'production') {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-        beautify: false,
-        comments: false,
-        mangle: { screw_ie8 : true },
-        compress: {
+      new webpack.DefinePlugin({
+        'NODE_ENV': JSON.stringify(NODE_ENV),
+        'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
+      }),
+
+      // выделение общего кода из точек входа
+      new webpack.optimize.CommonsChunkPlugin({
+          name: 'vendor',
+          // filename: 'vendor-[hash].js',
+          minChunks: function (module) {
+              return module.context && module.context.indexOf('node_modules') !== -1;
+          },
+      }),
+
+      new ExtractTextPlugin({
+        filename: '[name].css',
+        disable: !isProd,
+        allChunks: true
+      })
+
+      // new HtmlWebpackPlugin({
+      //   filename: 'index.html',
+      //   template: 'template/index.html',
+      //   chunksSortMode: 'dependency',
+      //   minify: {
+      //       collapseWhitespace : false
+      //   }
+      // })
+    ].concat( isDev
+      ? [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin()
+      ]
+      : [
+        new webpack.optimize.UglifyJsPlugin({
+          beautify: false,
+          comments: false,
+          mangle: {
+            screw_ie8 : true,
+            keep_fnames: true
+          },
+          compress: {
             screw_ie8: true,
             sequences : true,
             booleans : true,
             loops : true,
             unused : true,
-            warnings : false,
-            drop_console: true,
-            unsafe : true
-        }
-    })
-  );
-}
+            warnings : false
+            // drop_console: true
+          }
+        }),
+        new webpack.LoaderOptionsPlugin({
+          minimize: true,
+          debug: false
+        })
+       ]
+    ),
 
-// массив для мульти-компиляции
-module.exports = [config];
+    watch: isDev,
+    watchOptions: {
+        aggregateTimeout: 150
+    },
+
+    devtool: isProd ? 'source-map' : 'cheap-module-eval-source-map',
+
+    devServer: {
+      host: 'localhost',
+      proxy: {
+        "/api": "http://localhost:8080"
+      },
+      port: '9000',
+      contentBase: [
+          path.resolve(__dirname, 'public')
+      ],
+      hot: true,
+      historyApiFallback: true
+    }
+  }
+};
+
+module.exports = webpackConfig;
